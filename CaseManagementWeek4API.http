@@ -1,0 +1,6 @@
+@CaseManagementWeek4API_HostAddress = http://localhost:5250
+
+GET {{CaseManagementWeek4API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
