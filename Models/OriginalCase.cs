@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourtOnlineWeek5.Models;
+namespace CaseManagementWeek4API.Models;
 
 [Index("CaseNumber", Name = "IX_OriginalCases_CaseNumber")]
 [Index("CaseNumber", Name = "UQ_OriginalCases_CaseNumber", IsUnique = true)]

@@ -1,4 +1,4 @@
-using CourtOnlineWeek5.Data;
+using CaseManagementWeek4API.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

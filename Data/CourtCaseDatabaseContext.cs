@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CourtOnlineWeek5.Models;
+using CaseManagementWeek4API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourtOnlineWeek5.Data;
+namespace CaseManagementWeek4API.Data;
 
 public partial class CourtCaseDatabaseContext : DbContext
 {

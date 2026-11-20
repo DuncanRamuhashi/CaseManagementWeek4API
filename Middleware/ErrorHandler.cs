@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CourtOnlineWeek5.Generic
+namespace CaseManagementWeek4API.Generic
 {
     public static class ErrorHandler
     {

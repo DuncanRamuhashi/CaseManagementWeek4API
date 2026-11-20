@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourtOnlineWeek5.Models;
+namespace CaseManagementWeek4API.Models;
 
 [Index("Idnumber", Name = "IX_Defendants_IDNumber")]
 public partial class Defendant

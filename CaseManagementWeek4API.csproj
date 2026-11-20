@@ -20,8 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Services\" />
+    <Folder Include="DTOs\ChargeDTO\" />
+    <Folder Include="DTOs\CourtDTO\" />
+    <Folder Include="DTOs\CourtCaseDTO\" />
+    <Folder Include="DTOs\CourtCaseDefendantDTO\" />
+    <Folder Include="DTOs\DefetendantDTO\" />
+    <Folder Include="DTOs\JudgeDTO\" />
+    <Folder Include="DTOs\ProsecutorDTO\" />
+    <Folder Include="DTOs\OriginalCaseDTO\" />
   </ItemGroup>
 
 </Project>
