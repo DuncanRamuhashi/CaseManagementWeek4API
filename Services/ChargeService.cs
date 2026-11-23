@@ -1,6 +1,6 @@
 ﻿namespace CaseManagementWeek4API.Services
 {
-    public class ChargeService
+    public class ChargeService 
     {
     }
 }
