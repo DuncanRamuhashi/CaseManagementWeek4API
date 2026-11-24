@@ -1,4 +1,6 @@
 using CaseManagementWeek4API.Data;
+using CaseManagementWeek4API.Interfaces;
+using CaseManagementWeek4API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,10 @@ builder.Services.AddDbContext<CourtCaseDatabaseContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+//You need to register ICharge and ChargeService in dependency injection
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<ICharge, ChargeService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
