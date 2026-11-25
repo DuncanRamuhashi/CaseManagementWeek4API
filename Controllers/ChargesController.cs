@@ -1,4 +1,5 @@
 ﻿using CaseManagementWeek4API.DTOs.ChargeDTO;
+using CaseManagementWeek4API.Generic;
 using CaseManagementWeek4API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,14 +23,20 @@ namespace CaseManagementWeek4API.Controllers
             [HttpGet]
             public async Task<IActionResult> Index(int? courtCaseId)
             {
-                var charges = await ChargeService.Index(courtCaseId);
 
-                return Ok(charges);
+               return await ErrorHandler.ExecuteAsync(async () =>
+               { 
+                  var charges = await ChargeService.Index(courtCaseId);
+
+                  return Ok(charges);
+                 });
             }
 
             // GET: api/Charges/5
             [HttpGet("{id}")]
             public async Task<IActionResult> Details(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var charge = await ChargeService.Details(id);
 
@@ -37,11 +44,15 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Charge not found.");
 
                 return Ok(charge);
-            }
+            });
+ 
+           }
 
-            // GET: api/Charges/5/create
-            [HttpGet("{courtCaseId}/create")]
+        // GET: api/Charges/5/create
+        [HttpGet("{courtCaseId}/create")]
             public async Task<IActionResult> Create(int courtCaseId)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var exists = await ChargeService.Create(courtCaseId);
 
@@ -53,12 +64,15 @@ namespace CaseManagementWeek4API.Controllers
                     Message = "Court case is valid. You can create a charge.",
                     CourtCaseId = courtCaseId
                 });
+            });
             }
 
             // POST: api/Charges
             [HttpPost]
             public async Task<IActionResult> Create(
                 [FromBody] CreateChargeDto charge)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var created = await ChargeService.Create(charge);
 
@@ -69,11 +83,14 @@ namespace CaseManagementWeek4API.Controllers
                     nameof(Details),
                     new { id = created.Id },
                     created);
-            }
-
+            });
+             }
+ 
             // GET: api/Charges/5/edit
             [HttpGet("{id}/edit")]
             public async Task<IActionResult> Edit(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var charge = await ChargeService.Edit(id);
 
@@ -81,6 +98,7 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Charge not found.");
 
                 return Ok(charge);
+            });
             }
 
             // PUT: api/Charges/5
@@ -89,17 +107,22 @@ namespace CaseManagementWeek4API.Controllers
                 int id,
                 [FromBody] UpdateChargeDto charge)
             {
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
                 var updated = await ChargeService.Edit(id, charge);
 
                 if (updated == null)
                     return NotFound("Charge not found.");
 
                 return Ok(updated);
+            });
             }
 
             // GET: api/Charges/5/delete
             [HttpGet("{id}/delete")]
             public async Task<IActionResult> Delete(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var charge = await ChargeService.Delete(id);
 
@@ -107,11 +130,14 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Charge not found.");
 
                 return Ok(charge);
+            });
             }
 
             // DELETE: api/Charges/5
             [HttpDelete("{id}")]
             public async Task<IActionResult> DeleteConfirmed(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var deleted = await ChargeService.DeleteConfirmed(id);
 
@@ -122,6 +148,7 @@ namespace CaseManagementWeek4API.Controllers
                 {
                     Message = "Charge deleted successfully."
                 });
+            });
             }
        }
     

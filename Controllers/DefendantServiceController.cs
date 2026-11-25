@@ -1,4 +1,5 @@
 ﻿using CaseManagementWeek4API.DTOs.DefetendantDTO;
+using CaseManagementWeek4API.Generic;
 using CaseManagementWeek4API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,21 +18,27 @@ namespace CaseManagementWeek4API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllDefendants()
         {
-            var defendants = await DefendantService.GetAllDefendants();
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                var defendants = await DefendantService.GetAllDefendants();
 
             return Ok(defendants);
+            });
         }
 
         // GET: api/Defendants/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDefendantById(string id)
         {
-            var defendant = await DefendantService.GetDefendantById(id);
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                var defendant = await DefendantService.GetDefendantById(id);
 
             if (defendant == null)
                 return NotFound("Defendant not found.");
 
             return Ok(defendant);
+            });
         }
 
         // POST: api/Defendants
@@ -39,7 +46,9 @@ namespace CaseManagementWeek4API.Controllers
         public async Task<IActionResult> CreateDefendant(
             [FromBody] CreateDefendantDto dto)
         {
-            if (!ModelState.IsValid)
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (await DefendantService.DefendantExists(dto.Id))
@@ -51,6 +60,7 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to register defendant.");
 
             return Ok("Defendant registered successfully.");
+            });
         }
 
         // PUT: api/Defendants/{id}
@@ -59,7 +69,9 @@ namespace CaseManagementWeek4API.Controllers
             string id,
             [FromBody] UpdateDefendantDto dto)
         {
-            if (id != dto.Id)
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (id != dto.Id)
                 return BadRequest("Defendant ID does not match.");
 
             if (!ModelState.IsValid)
@@ -74,13 +86,16 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to update defendant.");
 
             return Ok("Defendant updated successfully.");
+            });
         }
 
         // DELETE: api/Defendants/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDefendant(string id)
         {
-            if (!await DefendantService.DefendantExists(id))
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (!await DefendantService.DefendantExists(id))
                 return NotFound("Defendant not found.");
 
             if (await DefendantService.HasCourtCaseAssignments(id))
@@ -95,6 +110,7 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to delete defendant.");
 
             return Ok("Defendant deleted successfully.");
+            });
         }
     }
 }

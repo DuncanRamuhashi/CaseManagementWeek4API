@@ -1,4 +1,5 @@
 ﻿using CaseManagementWeek4API.DTOs.CourtCaseDTO;
+using CaseManagementWeek4API.Generic;
 using CaseManagementWeek4API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,14 +19,20 @@ namespace CaseManagementWeek4API.Controllers
             [HttpGet]
             public async Task<IActionResult> Index()
             {
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
                 var courtCases = await CourtCaseService.Index();
 
                 return Ok(courtCases);
+            });
+
             }
 
-            // GET: api/CourtCases/manage/5
-            [HttpGet("manage/{originalCaseId}")]
+        // GET: api/CourtCases/manage/5
+        [HttpGet("manage/{originalCaseId}")]
             public async Task<IActionResult> Manage(int originalCaseId)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var result = await CourtCaseService.Manage(originalCaseId);
 
@@ -33,11 +40,14 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Original case not found.");
 
                 return Ok(result);
-            }
+            });
+             }
 
             // GET: api/CourtCases/create/5
             [HttpGet("create/{originalCaseId}")]
             public async Task<IActionResult> Create(int originalCaseId)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var result = await CourtCaseService.Create(originalCaseId);
 
@@ -45,12 +55,15 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Original case not found.");
 
                 return Ok(result);
-            }
+            });
+        }
 
             // POST: api/CourtCases
             [HttpPost]
             public async Task<IActionResult> Create(
                 [FromBody] CreateCourtCaseDto courtCase)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var created = await CourtCaseService.Create(courtCase);
 
@@ -64,11 +77,14 @@ namespace CaseManagementWeek4API.Controllers
                     nameof(Edit),
                     new { id = created.Id },
                     created);
-            }
+            });
+        }
 
             // GET: api/CourtCases/5/edit
             [HttpGet("{id}/edit")]
             public async Task<IActionResult> Edit(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var courtCase = await CourtCaseService.Edit(id);
 
@@ -76,6 +92,7 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Court case not found.");
 
                 return Ok(courtCase);
+            });
             }
 
             // PUT: api/CourtCases/5
@@ -84,6 +101,8 @@ namespace CaseManagementWeek4API.Controllers
                 int id,
                 [FromBody] UpdateCourtCaseDto courtCase)
             {
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
                 var updated = await CourtCaseService.Edit(id, courtCase);
 
                 if (updated == null)
@@ -91,11 +110,14 @@ namespace CaseManagementWeek4API.Controllers
                         "Court case could not be updated. Check that the court case exists and the selected court is active.");
 
                 return Ok(updated);
-            }
+            });
+           }
 
             // GET: api/CourtCases/5/delete
             [HttpGet("{id}/delete")]
             public async Task<IActionResult> Delete(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var courtCase = await CourtCaseService.Delete(id);
 
@@ -103,11 +125,14 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Court case not found.");
 
                 return Ok(courtCase);
+            });
             }
 
             // DELETE: api/CourtCases/5
             [HttpDelete("{id}")]
             public async Task<IActionResult> DeleteConfirmed(int id)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var deleted = await CourtCaseService.DeleteConfirmed(id);
 
@@ -118,11 +143,14 @@ namespace CaseManagementWeek4API.Controllers
                 {
                     Message = "Court case deleted successfully."
                 });
+            });
             }
 
             // GET: api/CourtCases/5/defendants/available
             [HttpGet("{courtCaseId}/defendants/available")]
             public async Task<IActionResult> AddDefendant(int courtCaseId)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var result = await CourtCaseService.AddDefendant(courtCaseId);
 
@@ -130,12 +158,15 @@ namespace CaseManagementWeek4API.Controllers
                     return NotFound("Court case not found.");
 
                 return Ok(result);
+            });
             }
 
             // POST: api/CourtCases/defendants
             [HttpPost("defendants")]
             public async Task<IActionResult> AddDefendant(
                 [FromBody] AddCourtCaseDefendantDto defendant)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var result = await CourtCaseService.AddDefendant(defendant);
 
@@ -151,12 +182,15 @@ namespace CaseManagementWeek4API.Controllers
                 {
                     result.Message
                 });
+            });
             }
 
             // DELETE: api/CourtCases/defendants
             [HttpDelete("defendants")]
             public async Task<IActionResult> RemoveDefendant(
                 [FromBody] RemoveCourtCaseDefendantDto defendant)
+            {
+            return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var result = await CourtCaseService.RemoveDefendant(defendant);
 
@@ -167,6 +201,7 @@ namespace CaseManagementWeek4API.Controllers
                 {
                     result.Message
                 });
+            });
             }
         }
     }

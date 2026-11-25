@@ -1,4 +1,5 @@
 ﻿using CaseManagementWeek4API.DTOs.ProsecutorDTO;
+using CaseManagementWeek4API.Generic;
 using CaseManagementWeek4API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,23 +17,29 @@ namespace CaseManagementWeek4API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllProsecutors()
         {
-            var prosecutors =
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                var prosecutors =
                 await ProsecutorService.GetAllProsecutors();
 
             return Ok(prosecutors);
+            });
         }
 
         // GET: api/ProsecutorService/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProsecutorById(string id)
         {
-            var prosecutor =
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                var prosecutor =
                 await ProsecutorService.GetProsecutorById(id);
 
             if (prosecutor == null)
                 return NotFound("Prosecutor not found.");
 
             return Ok(prosecutor);
+            });
         }
 
         // POST: api/ProsecutorService
@@ -40,7 +47,9 @@ namespace CaseManagementWeek4API.Controllers
         public async Task<IActionResult> CreateProsecutor(
             [FromBody] CreateProsecutorDto dto)
         {
-            if (await ProsecutorService.ProsecutorExists(dto.Id))
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (await ProsecutorService.ProsecutorExists(dto.Id))
                 return Conflict("This Prosecutor ID already exists.");
 
             var result =
@@ -53,6 +62,7 @@ namespace CaseManagementWeek4API.Controllers
                 nameof(GetProsecutorById),
                 new { id = dto.Id },
                 dto);
+            });
         }
 
         // PUT: api/ProsecutorService/{id}
@@ -61,7 +71,9 @@ namespace CaseManagementWeek4API.Controllers
             string id,
             [FromBody] UpdateProsecutorDto dto)
         {
-            if (id != dto.Id)
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (id != dto.Id)
                 return BadRequest("Prosecutor ID does not match.");
 
             if (!await ProsecutorService.ProsecutorExists(id))
@@ -74,13 +86,16 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to update prosecutor.");
 
             return Ok("Prosecutor updated successfully.");
+            });
         }
 
         // DELETE: api/ProsecutorService/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProsecutor(string id)
         {
-            if (!await ProsecutorService.ProsecutorExists(id))
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (!await ProsecutorService.ProsecutorExists(id))
                 return NotFound("Prosecutor not found.");
 
             if (await ProsecutorService.HasCourtCaseAssignments(id))
@@ -96,6 +111,7 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to delete prosecutor.");
 
             return Ok("Prosecutor deleted successfully.");
+            });
         }
     }
 }

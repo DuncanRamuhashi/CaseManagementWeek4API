@@ -7,7 +7,7 @@ namespace CaseManagementWeek4API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class HomeController : Controller
     {
         private IDashboard DashboardService =>
             HttpContext.RequestServices
@@ -17,6 +17,7 @@ namespace CaseManagementWeek4API.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+
             return await ErrorHandler.ExecuteAsync(async () =>
             {
                 var dashboard = await DashboardService.Index();

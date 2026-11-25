@@ -1,4 +1,5 @@
 ﻿using CaseManagementWeek4API.DTOs.JudgeDTO;
+using CaseManagementWeek4API.Generic;
 using CaseManagementWeek4API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
@@ -17,21 +18,27 @@ namespace CaseManagementWeek4API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllJudges()
         {
-            var judges = await JudgeService.GetAllJudges();
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                var judges = await JudgeService.GetAllJudges();
 
             return Ok(judges);
+            });
         }
 
         // GET: api/JudgeService/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJudgeById(string id)
         {
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
             var judge = await JudgeService.GetJudgeById(id);
 
             if (judge == null)
                 return NotFound("Judge not found.");
 
             return Ok(judge);
+            });
         }
 
         // POST: api/JudgeService
@@ -39,7 +46,9 @@ namespace CaseManagementWeek4API.Controllers
         public async Task<IActionResult> CreateJudge(
             [FromBody] CreateJudgeDto dto)
         {
-            if (await JudgeService.JudgeExists(dto.Id))
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (await JudgeService.JudgeExists(dto.Id))
                 return Conflict("This Judge ID already exists.");
 
             var created = await JudgeService.CreateJudge(dto);
@@ -48,6 +57,7 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to create judge. Check that the Court ID exists.");
 
             return Ok("Judge registered successfully.");
+            });
         }
 
         // PUT: api/JudgeService/{id}
@@ -56,7 +66,9 @@ namespace CaseManagementWeek4API.Controllers
             string id,
             [FromBody] UpdateJudgeDto dto)
         {
-            if (id != dto.Id)
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (id != dto.Id)
                 return BadRequest("Judge ID does not match.");
 
             var updated = await JudgeService.UpdateJudge(id, dto);
@@ -65,13 +77,16 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to update judge. Check the Judge ID and Court ID.");
 
             return Ok("Judge updated successfully.");
+            });
         }
 
         // DELETE: api/JudgeService/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJudge(string id)
         {
-            if (!await JudgeService.JudgeExists(id))
+            return await ErrorHandler.ExecuteAsync(async () =>
+            {
+                if (!await JudgeService.JudgeExists(id))
                 return NotFound("Judge not found.");
 
             if (await JudgeService.HasCourtCaseAssignments(id))
@@ -83,6 +98,7 @@ namespace CaseManagementWeek4API.Controllers
                 return BadRequest("Unable to delete judge.");
 
             return Ok("Judge deleted successfully.");
+            });
         }
     }
 }
