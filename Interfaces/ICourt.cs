@@ -1,17 +1,25 @@
-﻿using CaseManagementWeek4API.Models;
+﻿using CaseManagementWeek4API.DTOs.CourtDTO;
+using CaseManagementWeek4API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaseManagementWeek4API.Interfaces
 {
     public interface ICourt
     {
-        Task<IActionResult> Index();
-        Task<IActionResult> Details(int id);
-        IActionResult Create();
-        Task<IActionResult> Create(Court court);
-        Task<IActionResult> Edit(int id);
-        Task<IActionResult> Edit(int id, Court court);
-            Task<IActionResult> Delete(int id);
-        Task<IActionResult> DeleteConfirmed(int id); 
+        Task<List<CourtDto>> Index();
+
+        Task<object?> Details(int id);
+
+        Task<object> Create();
+
+        Task<CourtDto?> Create(CreateCourtDto court);
+
+        Task<CourtDto?> Edit(int id);
+
+        Task<CourtDto?> Edit(int id, UpdateCourtDto court);
+
+        Task<CourtDto?> Delete(int id);
+
+        Task<(bool Success, string Message)> DeleteConfirmed(int id);
     }
 }

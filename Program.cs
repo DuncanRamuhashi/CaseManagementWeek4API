@@ -1,3 +1,4 @@
+
 using CaseManagementWeek4API.Data;
 using CaseManagementWeek4API.Interfaces;
 using CaseManagementWeek4API.Services;
@@ -5,30 +6,39 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-// SQL Server and API-owned migration assembly
-// Register database connection
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Database
 builder.Services.AddDbContext<CourtCaseDatabaseContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
-//You need to register ICharge and ChargeService in dependency injection
+
+// Dependency Injection
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<ICharge, ChargeService>();
+builder.Services.AddScoped<ICourtCase, CourtCaseService>();
+builder.Services.AddScoped<ICourt, CourtService>();
+builder.Services.AddScoped<IDefendant, DefendantService>();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Case Management API V1");
+        options.RoutePrefix = string.Empty;
+    });
 }
-// Redirect homepage to API documentation
-app.MapGet("/", () => Results.Redirect("/openapi/v1.json"));
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
