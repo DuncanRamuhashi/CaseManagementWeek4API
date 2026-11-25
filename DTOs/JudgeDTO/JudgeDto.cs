@@ -8,7 +8,7 @@ namespace CaseManagementWeek4API.DTOs.JudgeDTO
         public string Id { get; set; } = null!;
         public string? Name { get; set; }
         public string? Title { get; set; }
-        public string? CourtId { get; set; }
+        public int? CourtId { get; set; }
         public string? CourtName { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
@@ -16,7 +16,6 @@ namespace CaseManagementWeek4API.DTOs.JudgeDTO
         public bool? IsActive { get; set; }
     }
 
-    // Used when registering a new judge
     public class CreateJudgeDto
     {
         [Required]
@@ -29,7 +28,7 @@ namespace CaseManagementWeek4API.DTOs.JudgeDTO
         public string? Title { get; set; }
 
         [Required]
-        public string CourtId { get; set; } = null!;
+        public int CourtId { get; set; }
 
         [EmailAddress]
         public string? Email { get; set; }
@@ -41,7 +40,6 @@ namespace CaseManagementWeek4API.DTOs.JudgeDTO
         public bool? IsActive { get; set; } = true;
     }
 
-    // Used when updating an existing judge
     public class UpdateJudgeDto
     {
         [Required]
@@ -54,7 +52,7 @@ namespace CaseManagementWeek4API.DTOs.JudgeDTO
         public string? Title { get; set; }
 
         [Required]
-        public string CourtId { get; set; } = null!;
+        public int CourtId { get; set; }
 
         [EmailAddress]
         public string? Email { get; set; }

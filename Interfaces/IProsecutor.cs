@@ -1,17 +1,23 @@
-﻿using CaseManagementWeek4API.Models;
+﻿using CaseManagementWeek4API.DTOs.ProsecutorDTO;
+using CaseManagementWeek4API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CaseManagementWeek4API.Interfaces
 {
     public interface IProsecutor
     {
-        Task<IActionResult> Index();
-        Task<IActionResult> Details(string id);
-        IActionResult Create();
-        Task<IActionResult> Create(Prosecutor prosecutor);
-        Task<IActionResult> Edit(string id);
-        Task<IActionResult> Edit(string id, Prosecutor prosecutor);
-        Task<IActionResult> Delete(string id);
-        Task<IActionResult> DeleteConfirmed(string id);
+        Task<List<ProsecutorDto>> GetAllProsecutors();
+
+        Task<ProsecutorDto?> GetProsecutorById(string id);
+
+        Task<bool> ProsecutorExists(string id);
+
+        Task<bool> HasCourtCaseAssignments(string id);
+
+        Task<bool> CreateProsecutor(CreateProsecutorDto dto);
+
+        Task<bool> UpdateProsecutor(string id, UpdateProsecutorDto dto);
+
+        Task<bool> DeleteProsecutor(string id);
     }
 }
