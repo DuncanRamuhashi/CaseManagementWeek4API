@@ -28,6 +28,7 @@ builder.Services.AddScoped<IDefendant, DefendantService>();
 builder.Services.AddScoped<IJudge, JudgeService>();
 builder.Services.AddScoped<IOriginalCase, OriginalCaseService>();
 builder.Services.AddScoped<IProsecutor, ProsecutorService>();
+builder.Services.AddScoped<IDashboard, DashboardService>();
 var app = builder.Build();
 
 // Configure HTTP request pipeline
